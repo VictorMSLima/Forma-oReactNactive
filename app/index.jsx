@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, Image, Pressable } from "react-native";
 
+import { FokusBotao } from "../components/FokusBotao";
+import { BotaoDeAcao } from "../components/BotaoDeAcao";
+import { Timer } from "../components/Timer";
+
 const minuto = 1;
 
 const pomodoro = [
@@ -32,28 +36,17 @@ export default function Index() {
       <View style={estilos.actions}>
         <View style={estilos.contexto}>
           {pomodoro.map((item) => (
-            <Pressable
+            <BotaoDeAcao
               key={item.id}
-              style={
-                tipoTempo.id === item.id ? estilos.contextoBotaoAtivo : null
-              }
-              onPress={() => {
-                setTipoTempo(item);
-              }}
-            >
-              <Text style={estilos.contextoBotaoTexto}>{item.display}</Text>
-            </Pressable>
+              ativo={tipoTempo.id === item.id}
+              onPress={() => setTipoTempo(item)}
+              display={item.display}
+            />
           ))}
         </View>
-        <Text style={estilos.timer}>
-          {new Date(tipoTempo.tempoInicial * 1000).toLocaleTimeString("pt-BR", {
-            minutes: "2-digit",
-            seconds: "2-digit",
-          })}
-        </Text>
-        <Pressable style={estilos.botao}>
-          <Text style={estilos.textoBotao}>Começar</Text>
-        </Pressable>
+        <Timer tempoInicial={tipoTempo.tempoInicial} />
+        <FokusBotao />
+        
       </View>
       <View>
         <Text style={estilos.rodape}>Projeto do Curso Alura</Text>
@@ -85,23 +78,7 @@ const estilos = StyleSheet.create({
     height: 300,
     marginBottom: 20,
   },
-  timer: {
-    color: "#fff",
-    fontSize: 54,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  botao: {
-    backgroundColor: "#B872FF",
-    padding: 8,
-    borderRadius: 32,
-  },
-  textoBotao: {
-    color: "#021123",
-    fontWeight: "bold",
-    fontSize: 18,
-    textAlign: "center",
-  },
+ 
   rodape: {
     color: "#98A0A8",
     fontSize: 12.5,
@@ -111,14 +88,5 @@ const estilos = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-  },
-  contextoBotaoTexto: {
-    color: "#FFF",
-    fontSize: 12.5,
-    padding: 8,
-  },
-  contextoBotaoAtivo: {
-    backgroundColor: "#144480",
-    borderRadius: 32,
   },
 });
